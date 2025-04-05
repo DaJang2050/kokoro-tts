@@ -18,7 +18,7 @@ uv python install 3.11.9 --mirror "%LOCAL_MIRROR%"
 echo 第三步：使用uv恢复环境
 REM 同步依赖，指定清华镜像源
 uv sync --default-index "https://pypi.tuna.tsinghua.edu.cn/simple"
-echo 请问是否需要安装 CUDA 版本的 PyTorch？(y/n) 它下载往往很慢（尽管使用南京大学安装源） 
+echo 请问是否需要安装 CUDA 版本的 PyTorch（2.3 GiB）？(y/n) 它下载往往很慢（尽管使用南京大学安装源） 
 set /p "choice=请输入您的选择: "
 if /i "%choice%"=="y" (
   echo 正在安装 CUDA 版本的 PyTorch...
