@@ -1,0 +1,2 @@
+# 所有 .bat 文件都应该使用 CRLF 换行符
+*.bat eol=crlf
