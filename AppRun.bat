@@ -22,7 +22,6 @@ echo 请问是否需要安装 CUDA 版本的 PyTorch？(y/n) 它下载往往很�
 set /p "choice=请输入您的选择: "
 if /i "%choice%"=="y" (
   echo 正在安装 CUDA 版本的 PyTorch...
-  echo 由于 CUDA 版本的 torch 安装源不稳定，如果觉得下载慢，可以按 "Ctrl+C" 跳过执行这一步
   uv pip install torch torchvision torchaudio --index-url https://mirror.nju.edu.cn/pytorch/whl/cu126
 ) else (
   echo 跳过安装 CUDA 版本的 PyTorch。
