@@ -1,6 +1,16 @@
 @echo off
 chcp 65001 > nul
 
+REM 检查 uv.exe 是否存在
+set "uv_path=C:\Users\%username%\.local\bin\uv.exe"
+if exist "%uv_path%" (
+    echo uv.exe 已存在于 %uv_path%，直接执行第四步
+    cd python
+    goto step4
+) else (
+    echo uv.exe 不存在，将依次执行全部步骤
+)
+
 echo 第一步：从本地安装uv
 cd uv
 REM 设置 INSTALLER_DOWNLOAD_URL 环境变量 实现从本地安装，避免Github网络问题
@@ -29,6 +39,7 @@ if /i "%choice%"=="y" (
 )
 uv sync
 
+:step4
 echo 第四步：运行 app.py
 uv run app.py
 echo 请按回车键退出!
