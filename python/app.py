@@ -5,6 +5,11 @@ import threading
 import pyperclip  # 用于监听剪贴板
 import re  # 用于检测中文字符
 import subprocess
+import warnings
+
+# 忽略特定类型的警告
+warnings.filterwarnings("ignore", category=UserWarning)
+warnings.filterwarnings("ignore", category=FutureWarning)
 
 # 全局变量声明
 pipeline = None
