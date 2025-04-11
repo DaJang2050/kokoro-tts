@@ -6,6 +6,7 @@ import pyperclip  # 用于监听剪贴板
 import re  # 用于检测中文字符
 import subprocess
 import warnings
+import keyboard  # 用于监听键盘事件
 
 # 忽略特定类型的警告
 warnings.filterwarnings("ignore", category=UserWarning)
@@ -21,6 +22,7 @@ init_error = None
 # 存储上一次剪贴板内容，用于对比检测变化
 last_clipboard_content = ""
 playing = False  # 标记是否正在播放
+reading_enabled = True  # 标记是否启用朗读功能，默认启用
 
 # 配置参数
 REPEAT_COUNT = 3  # 重复播放次数
@@ -236,10 +238,11 @@ def play_text(text):
 
 def monitor_clipboard():
     """监听剪贴板变化"""
-    global last_clipboard_content, playing, init_completed, init_failed
+    global last_clipboard_content, playing, init_completed, init_failed, reading_enabled
     
     print(f"剪贴板监听已启动，复制非中文文本后将自动朗读{REPEAT_COUNT}次...")
     print("每次朗读间隔: {:.1f}秒".format(REPEAT_INTERVAL))
+    print("使用 ctrl+shift+x 切换朗读功能的开启/关闭")
     
     # 获取初始剪贴板内容
     try:
@@ -269,6 +272,11 @@ def monitor_clipboard():
                 
                 print(f"准备播放非中文内容: {current_content[:50]}..." if len(current_content) > 50 else f"准备播放非中文内容: {current_content}")
                 
+                # 检查朗读功能是否启用
+                if not reading_enabled:
+                    print("朗读功能已关闭，跳过播放")
+                    continue
+                
                 # 如果正在播放，等待播放结束
                 if playing:
                     print("等待当前播放结束...")
@@ -287,12 +295,27 @@ def monitor_clipboard():
             print(f"监听剪贴板时发生错误: {e}")
             time.sleep(1)  # 出错时稍微延长休眠时间
 
+def toggle_reading():
+    """切换朗读功能的开启/关闭状态"""
+    global reading_enabled
+    reading_enabled = not reading_enabled
+    if reading_enabled:
+        print("朗读功能已开启")
+    else:
+        print("朗读功能已关闭")
+
+def listen_for_toggle():
+    """监听键盘事件，切换朗读状态"""
+    keyboard.add_hotkey('ctrl+shift+x', toggle_reading)
+    keyboard.wait()  # 保持线程运行，直到程序退出
+
 if __name__ == "__main__":
     print("程序启动中...")
     print("-------------------")
     print("英文文本朗读助手")
     print("功能: 监听剪贴板中的英文文本并朗读")
     print("操作: 复制任何英文文本即可自动朗读")
+    print("使用 ctrl+shift+x 切换朗读功能的开启/关闭")
     print("-------------------")
     
     # 检查模型路径
@@ -312,6 +335,11 @@ if __name__ == "__main__":
     spinner_thread = threading.Thread(target=spinner)
     spinner_thread.daemon = True
     spinner_thread.start()
+
+    # 创建并启动键盘监听线程
+    keyboard_thread = threading.Thread(target=listen_for_toggle)
+    keyboard_thread.daemon = True
+    keyboard_thread.start()
     
     try:
         # 启动剪贴板监听（不用等待初始化完成）
