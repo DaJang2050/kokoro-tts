@@ -257,40 +257,44 @@ def monitor_clipboard():
     while True:
         try:
             current_content = pyperclip.paste()
-            
-            # 检测剪贴板内容是否发生变化且不为空
-            if current_content != last_clipboard_content and current_content.strip() != "":
-                print(f"检测到剪贴板变化 [{len(current_content)} 字符]")
+
+            if len(current_content) <= 500:
+                # 检测剪贴板内容是否发生变化且不为空
+                if current_content != last_clipboard_content and current_content.strip() != "":
+                    print(f"检测到剪贴板变化 [{len(current_content)} 字符]")
+                    
+                    # 更新上次剪贴板内容
+                    last_clipboard_content = current_content
+                    
+                    # 检查是否包含中文
+                    if is_chinese_content(current_content):
+                        print(f"检测到中文内容，已忽略: {current_content[:50]}..." if len(current_content) > 50 else f"检测到中文内容，已忽略: {current_content}")
+                        continue
+                    
+                    print(f"准备播放非中文内容: {current_content[:50]}..." if len(current_content) > 50 else f"准备播放非中文内容: {current_content}")
+                    
+                    # 检查朗读功能是否启用
+                    if not reading_enabled:
+                        print("朗读功能已关闭，跳过播放")
+                        continue
+                    
+                    # 如果正在播放，等待播放结束
+                    if playing:
+                        print("等待当前播放结束...")
+                        while playing:
+                            time.sleep(0.2)  # 减少等待检查间隔
+                    
+                    # 创建新线程播放文本，避免阻塞剪贴板监听
+                    play_thread = threading.Thread(target=play_text, args=(current_content,))
+                    play_thread.daemon = True
+                    play_thread.start()
                 
-                # 更新上次剪贴板内容
-                last_clipboard_content = current_content
-                
-                # 检查是否包含中文
-                if is_chinese_content(current_content):
-                    print(f"检测到中文内容，已忽略: {current_content[:50]}..." if len(current_content) > 50 else f"检测到中文内容，已忽略: {current_content}")
-                    continue
-                
-                print(f"准备播放非中文内容: {current_content[:50]}..." if len(current_content) > 50 else f"准备播放非中文内容: {current_content}")
-                
-                # 检查朗读功能是否启用
-                if not reading_enabled:
-                    print("朗读功能已关闭，跳过播放")
-                    continue
-                
-                # 如果正在播放，等待播放结束
-                if playing:
-                    print("等待当前播放结束...")
-                    while playing:
-                        time.sleep(0.2)  # 减少等待检查间隔
-                
-                # 创建新线程播放文本，避免阻塞剪贴板监听
-                play_thread = threading.Thread(target=play_text, args=(current_content,))
-                play_thread.daemon = True
-                play_thread.start()
-            
-            # 缩短剪贴板轮询间隔，提高响应速度
-            time.sleep(0.3)
-            
+                # 缩短剪贴板轮询间隔，提高响应速度
+                time.sleep(0.3)
+            else:
+                print(f"剪贴板内容过长，已忽略: {len(current_content)} 字符")
+                time.sleep(0.5)
+
         except Exception as e:
             print(f"监听剪贴板时发生错误: {e}")
             time.sleep(1)  # 出错时稍微延长休眠时间
