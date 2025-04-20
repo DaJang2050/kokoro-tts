@@ -1,0 +1,30 @@
+
+--- Error at Sat Apr 19 17:47:41 2025 ---
+Traceback (most recent call last):
+  File "D:\code\kokoro-tts\python\app.py", line 161, in initialize_system
+    pipeline = KPipeline(lang_code='a', repo_id='hexgrad/Kokoro-82M')
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\code\kokoro-tts\python\.venv\Lib\site-packages\kokoro\pipeline.py", line 99, in __init__
+    self.model = KModel(repo_id=repo_id).to(device).eval()
+                 ^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\code\kokoro-tts\python\.venv\Lib\site-packages\kokoro\model.py", line 67, in __init__
+    model = hf_hub_download(repo_id=repo_id, filename=KModel.MODEL_NAMES[repo_id])
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\code\kokoro-tts\python\app.py", line 142, in custom_hf_hub_download
+    raise FileNotFoundError(f"在本地模型目录中未找到所需文件: {filename}")
+FileNotFoundError: 在本地模型目录中未找到所需文件: kokoro-v1_0.pth
+
+--- Error at Sat Apr 19 18:10:37 2025 ---
+Traceback (most recent call last):
+  File "D:\code\kokoro-tts\python\app.py", line 161, in initialize_system
+    pipeline = KPipeline(lang_code='a', repo_id='hexgrad/Kokoro-82M')
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\code\kokoro-tts\python\.venv\Lib\site-packages\kokoro\pipeline.py", line 99, in __init__
+    self.model = KModel(repo_id=repo_id).to(device).eval()
+                 ^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\code\kokoro-tts\python\.venv\Lib\site-packages\kokoro\model.py", line 67, in __init__
+    model = hf_hub_download(repo_id=repo_id, filename=KModel.MODEL_NAMES[repo_id])
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\code\kokoro-tts\python\app.py", line 142, in custom_hf_hub_download
+    raise FileNotFoundError(f"在本地模型目录中未找到所需文件: {filename}")
+FileNotFoundError: 在本地模型目录中未找到所需文件: kokoro-v1_0.pth

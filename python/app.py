@@ -36,7 +36,7 @@ current_dir = os.path.dirname(os.path.abspath(__file__))
 parent_dir = os.path.dirname(current_dir)
 
 # 构建本地模型路径
-local_model_path = os.path.join(current_dir, "models--hexgrad--Kokoro-82M")
+local_model_path = os.path.join(current_dir,"models", "models--hexgrad--Kokoro-82M")
 
 def spinner():
     """显示加载进度动画"""
