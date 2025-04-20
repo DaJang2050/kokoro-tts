@@ -28,3 +28,82 @@ Traceback (most recent call last):
   File "D:\code\kokoro-tts\python\app.py", line 142, in custom_hf_hub_download
     raise FileNotFoundError(f"在本地模型目录中未找到所需文件: {filename}")
 FileNotFoundError: 在本地模型目录中未找到所需文件: kokoro-v1_0.pth
+
+--- Error at Sun Apr 20 20:46:45 2025 ---
+Traceback (most recent call last):
+  File "D:\code\kokoro-tts\python\.venv\Lib\site-packages\urllib3\connection.py", line 198, in _new_conn
+    sock = connection.create_connection(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\code\kokoro-tts\python\.venv\Lib\site-packages\urllib3\util\connection.py", line 60, in create_connection
+    for res in socket.getaddrinfo(host, port, family, socket.SOCK_STREAM):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\MagicBook\AppData\Roaming\uv\python\cpython-3.11.9-windows-x86_64-none\Lib\socket.py", line 962, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+socket.gaierror: [Errno 11004] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\code\kokoro-tts\python\.venv\Lib\site-packages\urllib3\connectionpool.py", line 787, in urlopen
+    response = self._make_request(
+               ^^^^^^^^^^^^^^^^^^^
+  File "D:\code\kokoro-tts\python\.venv\Lib\site-packages\urllib3\connectionpool.py", line 488, in _make_request
+    raise new_e
+  File "D:\code\kokoro-tts\python\.venv\Lib\site-packages\urllib3\connectionpool.py", line 464, in _make_request
+    self._validate_conn(conn)
+  File "D:\code\kokoro-tts\python\.venv\Lib\site-packages\urllib3\connectionpool.py", line 1093, in _validate_conn
+    conn.connect()
+  File "D:\code\kokoro-tts\python\.venv\Lib\site-packages\urllib3\connection.py", line 704, in connect
+    self.sock = sock = self._new_conn()
+                       ^^^^^^^^^^^^^^^^
+  File "D:\code\kokoro-tts\python\.venv\Lib\site-packages\urllib3\connection.py", line 205, in _new_conn
+    raise NameResolutionError(self.host, self, e) from e
+urllib3.exceptions.NameResolutionError: <urllib3.connection.HTTPSConnection object at 0x00000294ECD64E50>: Failed to resolve 'raw.githubusercontent.com' ([Errno 11004] getaddrinfo failed)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\code\kokoro-tts\python\.venv\Lib\site-packages\requests\adapters.py", line 667, in send
+    resp = conn.urlopen(
+           ^^^^^^^^^^^^^
+  File "D:\code\kokoro-tts\python\.venv\Lib\site-packages\urllib3\connectionpool.py", line 841, in urlopen
+    retries = retries.increment(
+              ^^^^^^^^^^^^^^^^^^
+  File "D:\code\kokoro-tts\python\.venv\Lib\site-packages\urllib3\util\retry.py", line 519, in increment
+    raise MaxRetryError(_pool, url, reason) from reason  # type: ignore[arg-type]
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='raw.githubusercontent.com', port=443): Max retries exceeded with url: /explosion/spacy-models/master/compatibility.json (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x00000294ECD64E50>: Failed to resolve 'raw.githubusercontent.com' ([Errno 11004] getaddrinfo failed)"))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\code\kokoro-tts\python\app.py", line 161, in initialize_system
+    pipeline = KPipeline(lang_code='a', repo_id='hexgrad/Kokoro-82M')
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\code\kokoro-tts\python\.venv\Lib\site-packages\kokoro\pipeline.py", line 113, in __init__
+    self.g2p = en.G2P(trf=trf, british=lang_code=='b', fallback=fallback, unk='')
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\code\kokoro-tts\python\.venv\Lib\site-packages\misaki\en.py", line 497, in __init__
+    spacy.cli.download(name)
+  File "D:\code\kokoro-tts\python\.venv\Lib\site-packages\spacy\cli\download.py", line 85, in download
+    compatibility = get_compatibility()
+                    ^^^^^^^^^^^^^^^^^^^
+  File "D:\code\kokoro-tts\python\.venv\Lib\site-packages\spacy\cli\download.py", line 130, in get_compatibility
+    r = requests.get(about.__compatibility__)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\code\kokoro-tts\python\.venv\Lib\site-packages\requests\api.py", line 73, in get
+    return request("get", url, params=params, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\code\kokoro-tts\python\.venv\Lib\site-packages\requests\api.py", line 59, in request
+    return session.request(method=method, url=url, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\code\kokoro-tts\python\.venv\Lib\site-packages\requests\sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\code\kokoro-tts\python\.venv\Lib\site-packages\requests\sessions.py", line 703, in send
+    r = adapter.send(request, **kwargs)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\code\kokoro-tts\python\.venv\Lib\site-packages\requests\adapters.py", line 700, in send
+    raise ConnectionError(e, request=request)
+requests.exceptions.ConnectionError: HTTPSConnectionPool(host='raw.githubusercontent.com', port=443): Max retries exceeded with url: /explosion/spacy-models/master/compatibility.json (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x00000294ECD64E50>: Failed to resolve 'raw.githubusercontent.com' ([Errno 11004] getaddrinfo failed)"))

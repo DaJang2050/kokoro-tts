@@ -78,7 +78,7 @@ def initialize_system():
         # 1. 安装spaCy模型
         try:
             print("检查 spaCy 英文模型...")
-            whl_path = os.path.join(current_dir, "en_core_web_sm-3.8.0-py3-none-any.whl")
+            whl_path = os.path.join(current_dir, "models","en_core_web_sm-3.8.0-py3-none-any.whl")
             if os.path.exists(whl_path):
                 subprocess.check_call([sys.executable, "-m", "pip", "install", whl_path], 
                                      stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
